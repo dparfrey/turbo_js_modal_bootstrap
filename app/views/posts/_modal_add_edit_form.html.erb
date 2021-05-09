@@ -1,0 +1,14 @@
+<%= form_with(model: post, id: 'post-modal-form', data: { controller: 'load-form' }) do |f| %>
+  <div class="modal-header">
+    <h5 class="modal-title" id="postModalTitle">Post</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <div class="modal-body" >
+    <%= render partial: 'posts/form', locals: {f: f, post: post} %>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-link" id="postModalCancelButton" data-bs-dismiss="modal">Cancel</button>
+    <%= f.submit class: "btn btn-primary",
+          data: { disable_with: false }  %>
+  </div>
+<% end %>
