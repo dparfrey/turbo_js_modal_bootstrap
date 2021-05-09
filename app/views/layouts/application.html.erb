@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TurboModalBootstrap</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <script src="https://kit.fontawesome.com/e3e88dae64.js" crossorigin="anonymous"></script>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbo-track': 'reload' %>
+    <%= stylesheet_pack_tag "application", media: 'all', "data-turbo-track": "reload" %>
+  </head>
+
+  <body>
+  <div class="container mt-4">
+    <%= yield %>
+  </div>
+  </body>
+</html>

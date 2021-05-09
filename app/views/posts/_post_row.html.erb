@@ -1,0 +1,22 @@
+<div class="row border-bottom py-2 align-items-center">
+  <div class="col-4 col-sm-3 col-md-2">
+    <%= link_to tag.i('', class: 'fa fa-lg fa-edit'), edit_post_path(post),
+      class: "me-2 btn btn-link", alt: "Edit #{post.title}" %>
+
+      <a href="#" alt="Delete <%= post.title %>"
+        data-controller="confirm" data-action="confirm#click"
+        data-confirm-title-value="Delete this Post?"
+        data-confirm-message-value="<p>Are you sure you want to delete the post &quot;<%= post.title %>&quot;?<p>"
+        data-confirm-ok-button-value="Delete Post"
+        data-confirm-url-value="<%= post_path(post) %>"
+        data-confirm-method-value="delete">
+        <i class="fa fa-lg fa-trash"></i>
+      </a>
+  </div>
+  <div class="col-5 col-sm-6 col-md-4">
+    <%= post.title %>
+  </div>
+  <div class="col-3 col-sm-3 col-md-4">
+    <%= post.body %>
+  </div>
+</div>
