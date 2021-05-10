@@ -1,8 +1,7 @@
 # turbo_modal_bootstrap
 
 ## Left to do
-* Update in place (currently refreshing page)
-* delete w/ confirm
+* Update in place. Works, but dialog stays up. Trying to find an event to close it.
 
 
 ## Project Setup

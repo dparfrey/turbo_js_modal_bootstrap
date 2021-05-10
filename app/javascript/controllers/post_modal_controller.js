@@ -2,6 +2,12 @@ import { Controller } from "stimulus";
 import { Modal } from "bootstrap";
 
 export default class extends Controller {
+  initialize() {
+
+    // document.addEventListener('turbo:before-stream-render', () => {
+    //   console.log('turbo:before-stream-render');
+    // });
+  }
 
   connect() {
     // console.log('Post modal controller connect');
