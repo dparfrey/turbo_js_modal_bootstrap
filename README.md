@@ -1,6 +1,11 @@
 # turbo_modal_bootstrap
 
-## Setup
+## Left to do
+* Update in place (currently refreshing page)
+* delete w/ confirm
+
+
+## Project Setup
 
 ```
 rails new turbo_modal_bootstrap
@@ -17,7 +22,7 @@ yarn add @popperjs/core
 adjust  config/webpack/environment.js (basically, add popper)
 
 ```
-mkdir app/javascript/channgels/stylesheets
+mkdir app/javascript/channels/stylesheets
 ```
 
 create application.scss with bootstrap and other imports/overrides.

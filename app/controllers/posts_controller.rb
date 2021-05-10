@@ -22,12 +22,12 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to posts_url, notice: 'Post was successfully created.' }
+        format.html { redirect_to posts_url, notice: 'Post was successfully created.', status: :unprocessable_entity }
       else
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace('post-modal-form',
                                                     partial: 'posts/modal_add_edit_form',
-                                                    locals: { post: @post })
+                                                    locals: { post: @post, reloading: true })
         end
       end
     end
@@ -36,12 +36,12 @@ class PostsController < ApplicationController
   def update
     respond_to do |format|
       if @post.update(post_params)
-        format.html { redirect_to posts_url, notice: 'Post was successfully updated.' }
+        format.html { redirect_to posts_url, notice: 'Post was successfully updated.', status: :unprocessable_entity }
       else
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace('post-modal-form',
                                                     partial: 'posts/modal_add_edit_form',
-                                                    locals: { post: @post })
+                                                    locals: { post: @post, reloading: true })
         end
       end
     end

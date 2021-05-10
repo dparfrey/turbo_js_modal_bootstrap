@@ -1,7 +1,7 @@
 <div class="row border-bottom py-2 align-items-center">
   <div class="col-4 col-sm-3 col-md-2">
     <%= link_to tag.i('', class: 'fa fa-lg fa-edit'), edit_post_path(post),
-      class: "me-2 btn btn-link", alt: "Edit #{post.title}" %>
+      class: "me-2 btn btn-link", alt: "Edit #{post.title}", "data-turbo-frame": "post" %>
 
       <a href="#" alt="Delete <%= post.title %>"
         data-controller="confirm" data-action="confirm#click"

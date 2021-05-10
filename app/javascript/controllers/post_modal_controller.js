@@ -2,6 +2,7 @@ import { Controller } from "stimulus";
 import { Modal } from "bootstrap";
 
 export default class extends Controller {
+
   connect() {
     // console.log('Post modal controller connect');
 
@@ -15,19 +16,30 @@ export default class extends Controller {
         this.modal.show();
       }
 
-      m.addEventListener('shown.bs.modal', function (event) {
-        let fld = document.querySelector('#post_title');
-        if (fld) { fld.focus(); }
-      });
-
-      m.addEventListener('hidden.bs.modal', function (event) {
-        console.log('removing...');
-
-        // ----- Bug in turbo? https://github.com/hotwired/turbo/issues/249
-        let b = document.querySelector('#contact');
-        b.src = "";
-        // -----
-      });
+      m.addEventListener('shown.bs.modal', this.setFocus);
+      m.addEventListener('hidden.bs.modal', this.modalHidden);
     });
+
+
+    // document.addEventListener("loadForm:reload", () => {
+    //   console.log('Form reloaded!');
+    // });
+  }
+
+  setFocus() {
+    // console.log('setFocus');
+    let fld = document.querySelector('#post_title');
+    if (fld) { fld.focus(); }
+  }
+
+  modalHidden() {
+    // console.log('modalHidden');
+
+    // ----- Bug in turbo? https://github.com/hotwired/turbo/issues/249
+    let b = document.querySelector('#post');
+    if (b) {
+      b.src = "";
+    }
+    // -----
   }
 }
