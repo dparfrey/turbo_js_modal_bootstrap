@@ -1,10 +1,20 @@
 # turbo_modal_bootstrap
 
-## Left to do
-* Update in place. Works, but dialog stays up. Trying to find an event to close it.
+Here's my take on a basic CRUD setup using Turbo and Stimulus, with Bootstrap modals. It's based
+on Doug Stull's excellent tutorial on the subject (see https://dev.to/dstull/how-to-use-modals-with-forms-in-rails-using-turbo-14n7), except with Bootstrap 5 instead of TailwindCSS.
 
+## Setup
 
-## Project Setup
+Clone repo, then go into app directory and run:
+```
+bundle
+yarn
+rails db:setup
+rails s
+```
+Navigate to http://localhost:3000
+
+## Project Setup (starting from scratch)
 
 ```
 rails new turbo_modal_bootstrap
@@ -35,4 +45,4 @@ import "./application"
 import "stylesheets/application"
 ```
 
-Create Posts controller, model, and basic scaffold
+Create Posts controller, model, basic scaffold, etc...
