@@ -3,10 +3,6 @@ import { Modal } from "bootstrap";
 
 export default class extends Controller {
   initialize() {
-
-    // document.addEventListener('turbo:before-stream-render', () => {
-    //   console.log('turbo:before-stream-render');
-    // });
   }
 
   connect() {

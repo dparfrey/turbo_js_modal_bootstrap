@@ -1,5 +1,5 @@
 <turbo-stream action="update" target="<%= dom_id(@post) %>">
   <template>
-    <%= render partial: 'post_row', locals: {post: @post } %>
+    <%= render partial: 'post_row', locals: {post: @post, close_modal: true } %>
   </template>
 </turbo-stream>
