@@ -24,14 +24,14 @@ set .ruby-version = 3.0.0 (also gemfile), .node-version = 14.13.1 (using rbenv, 
 
 ```
 rails hotwire:install
-yarn add bootstrap
+yarn add bootstrap@next
 yarn add @popperjs/core
 ```
 
 adjust  config/webpack/environment.js (basically, add popper)
 
 ```
-mkdir app/javascript/channels/stylesheets
+mkdir app/javascript/stylesheets
 ```
 
 create application.scss with bootstrap and other imports/overrides.

@@ -4,25 +4,23 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all
+    @posts = Post.all.order(created_at: :desc)
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @post = Post.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @post = Post.new(post_params)
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to posts_url, notice: 'Post was successfully created.', status: :unprocessable_entity }
+        format.html { redirect_to posts_url, status: :unprocessable_entity }
       else
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace('post-modal-form',
