@@ -12,7 +12,10 @@ export default class extends Controller {
       // console.log('close_modal hiding');
       var modal = Modal.getInstance(m); // Returns a Bootstrap modal instance
 
-      modal.hide();
+      if (modal) {
+        // console.log('hiding modal');
+        modal.hide();
+      }
     }
   }
 }
