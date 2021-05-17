@@ -3,7 +3,8 @@
   aria-labelledby="aria-post-modal" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable modal-fullscreen-sm-down">
       <div class="modal-content" id="post-modal-content">
-        <%= tag.div nil, id: 'post-modal-form' %>
+        <%= render partial: 'posts/modal_add_edit_form', locals: {post: @post} %>
+
       </div>
     </div>
 </div >

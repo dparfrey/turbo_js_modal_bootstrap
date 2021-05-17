@@ -11,22 +11,24 @@ class PostsController < ApplicationController
 
   def new
     @post = Post.new
+    render layout: false
   end
 
-  def edit; end
+  def edit
+    render layout: false
+  end
 
   def create
     @post = Post.new(post_params)
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to posts_url, status: :unprocessable_entity }
+        format.html { head :no_content }
+        # format.html { redirect_to posts_url, notice: 'Post was successfully added.' }
       else
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.replace('post-modal-form',
-                                                    partial: 'posts/modal_add_edit_form',
-                                                    locals: { post: @post, reloading: true })
-        end
+        Rails.logger.error(@post.errors.full_messages)
+        # head :no_content
+        render layout: false, status: unprocessable_entity
       end
     end
   end
@@ -34,14 +36,18 @@ class PostsController < ApplicationController
   def update
     respond_to do |format|
       if @post.update(post_params)
-        format.turbo_stream { render turbo_stream: turbo_stream.update(@post) }
+        # format.turbo_stream { render turbo_stream: turbo_stream.update(@post) }
         format.html { redirect_to posts_url, notice: 'Post was successfully updated.', status: :unprocessable_entity }
       else
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.replace('post-modal-form',
-                                                    partial: 'posts/modal_add_edit_form',
-                                                    locals: { post: @post, reloading: true })
-        end
+        # format.turbo_stream do
+        #   render turbo_stream: turbo_stream.replace('post-modal-form',
+        #                                             partial: 'posts/modal_add_edit_form',
+        #                                             locals: { post: @post, reloading: true })
+        # end
+
+        Rails.logger.error(@post.errors.full_messages)
+        # head :no_content
+        render layout: false, status: unprocessable_entity
       end
     end
   end

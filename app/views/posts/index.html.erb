@@ -1,42 +1,43 @@
-<%= turbo_frame_tag 'post'  %>
-
-<div class="row mb-2">
-  <div class="col-auto me-auto">
-    <div class="h2">Posts</div>
-  </div>
-  <div class="col-auto">
-    <a class="btn btn-outline-primary d-none d-md-inline float-end" href="<%= new_post_path %>"
-      data-turbo-frame="post">
-      <i class="fas fa-plus"></i> New Post
-    </a>
-  </div>
-</div>
-
-<div data-controller="post-modal">
-  <%= render partial: 'posts/modal_form_shell' %>
-
-  <% if @posts.count > 0 %>
-
-    <div class="row border-bottom border-primary mt-3">
-      <div class="col-4 col-sm-3 col-md-2">
-        &nbsp;
-      </div>
-      <div class="col-5 col-sm-6 col-md-4">
-        <strong class="text-primary">Title</strong>
-      </div>
-      <div class="col-3 col-sm-3 col-md-4">
-        <strong class="text-primary">Body</strong>
-      </div>
+<div data-controller="post-modal"
+    data-post-modal-new-url-value="<%= new_post_path %>"
+    data-post-modal-after-add-url-value="<%= posts_path %>"
+    >
+  <div class="row mb-2">
+    <div class="col-auto me-auto">
+      <div class="h2">Posts</div>
     </div>
+    <div class="col-auto">
+      <a class="btn btn-outline-primary d-none d-md-inline float-end" href="<%= new_post_path %>"
+        data-action="post-modal#showFormModal">
+        <i class="fas fa-plus"></i> New Post
+      </a>
+    </div>
+  </div>
 
-    <% @posts.each do |post| %>
-      <div id="<%= dom_id(post) %>">
-        <%= render partial: 'post_row', locals: {post: post } %>
+  <div>
+    <% if @posts.count > 0 %>
+
+      <div class="row border-bottom border-primary mt-3">
+        <div class="col-4 col-sm-3 col-md-2">
+          &nbsp;
+        </div>
+        <div class="col-5 col-sm-6 col-md-4">
+          <strong class="text-primary">Title</strong>
+        </div>
+        <div class="col-3 col-sm-3 col-md-4">
+          <strong class="text-primary">Body</strong>
+        </div>
       </div>
+
+      <% @posts.each do |post| %>
+        <div id="<%= dom_id(post) %>">
+          <%= render partial: 'post_row', locals: {post: post } %>
+        </div>
+      <% end %>
+    <% else %>
+
+    <h5>No posts found.</h5>
+
     <% end %>
-  <% else %>
-
-  <h5>No posts found.</h5>
-
-  <% end %>
+  </div>
 </div>

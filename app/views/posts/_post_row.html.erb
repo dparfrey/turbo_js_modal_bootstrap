@@ -1,12 +1,10 @@
-<% close = defined?(close_modal) ? close_modal : false %>
-<% c = close ? 'data-controller="close-modal" data-close-modal-selector-value="#post-modal"' : '' %>
-
-<div class="row border-bottom py-2 align-items-center" <%= c.html_safe %>>
+<div class="row border-bottom py-2 align-items-center">
   <div class="col-4 col-sm-3 col-md-2">
     <%= link_to tag.i('', class: 'fa fa-lg fa-info-circle'), post_path(post),
       class: "me-2 btn btn-link", alt: "Show #{post.title}" %>
     <%= link_to tag.i('', class: 'fa fa-lg fa-edit'), edit_post_path(post),
-      class: "me-2 btn btn-link", alt: "Edit #{post.title}", "data-turbo-frame": "post" %>
+      class: "me-2 btn btn-link", alt: "Edit #{post.title}",
+      "data-id": post.id, "data-action": "post-modal#showFormModal" %>
 
       <a href="#" alt="Delete <%= post.title %>"
         data-controller="confirm" data-action="confirm#click"

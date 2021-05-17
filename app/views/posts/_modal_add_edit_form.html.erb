@@ -1,7 +1,7 @@
 <%= form_with(model: post, id: 'post-modal-form',
-  data: { controller: 'load-form', load_form_reload_value: reloading }) do |f| %>
+  html: { novalidate: 'novalidate', 'data-validate': '' }) do |f| %>
   <div class="modal-header">
-    <h5 class="modal-title" id="postModalTitle">Post</h5>
+    <h5 class="modal-title" id="postModalTitle"><%= @post.new_record? ? 'New Post' : 'Change Post' %></h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
   </div>
   <div class="modal-body" >

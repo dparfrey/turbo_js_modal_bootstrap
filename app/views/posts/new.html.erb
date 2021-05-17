@@ -1,7 +1,1 @@
-<%= turbo_frame_tag 'post' do %>
-  <turbo-stream target="post-modal-form" action="replace">
-    <template>
-      <%= render partial: 'posts/modal_add_edit_form', locals: {post: @post, reloading: false} %>
-    </template>
-  </turbo-stream>
-<% end %>
+<%= render partial: 'posts/modal_form' %>
