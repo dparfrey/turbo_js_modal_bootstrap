@@ -3,6 +3,7 @@
 // version.
 import { Controller } from "stimulus";
 import { Modal } from "bootstrap";
+import { tempContainer } from "../src/mixins/tempContainer";
 
 export default class extends Controller {
   static values = {
@@ -12,34 +13,53 @@ export default class extends Controller {
     cancelButton: String,
     url: String,
     method: String,
-    frame: String
+    doAction: String
+  }
+
+  initialize() {
+    this.modalHidden = this.modalHidden.bind(this);
   }
 
   connect() {
     // console.log('Confirm controller connect');
+    tempContainer(this);  // register mixin
   }
 
-  click(event) {
+  disconnect() {
+    // console.log('disconnect');
+    document.removeEventListener('hidden.bs.modal', this.modalHidden);
+  }
+
+  confirm(event) {
     event.preventDefault();
 
     let title = this.titleValue;
     let msg = this.messageValue;
-    let ok = this.okButtonValue;
-    if (!ok) { ok = 'OK'; }
-    let cancel = this.cancelButtonValue;
-    if (!cancel) { cancel = 'Cancel'; }
+    let ok = this.okButtonValue || 'OK';
+    let cancel = this.cancelButtonValue || 'Cancel';
     let url = this.urlValue;
-    let method = this.methodValue;
-    if (!method) { method = 'get'; }
-    let frame = this.frameValue
-    if (frame) {
-      frame = `data-turbo-frame="${frame}"`;
-    }
-
+    let method = this.methodValue || 'get';
     let dMethod = method === 'get' ? '' : " data-method=\"" + method + "\"";
 
+    let confirmButton;
+
+    if (this.doActionValue) {
+      confirmButton = `
+        <a href="${url}" ${dMethod} class="btn btn-primary"
+          data-action="${this.doActionValue}"
+          data-url="${url}"
+          id="confirmModalConfirmButton">${ok}</a>
+      `;
+    } else {
+      confirmButton = `
+        <a href="${url}" ${dMethod} class="btn btn-primary"
+          data-bs-dismiss="modal"
+          id="confirmModalConfirmButton">${ok}</a>
+      `;
+    }
+
     let html = `
-      <div class="modal fade" id="confirmDialog" tabindex="-1" role="dialog" aria-labelledby="ariaConfirmModal" aria-hidden="true">
+      <div class="modal fade" id="the-modal" tabindex="-1" role="dialog" aria-labelledby="ariaConfirmModal" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -51,29 +71,26 @@ export default class extends Controller {
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-link" id="confirmModalCancelButton" data-bs-dismiss="modal">${cancel}</button>
-              <a href="${url}" ${dMethod} class="btn btn-primary"
-                ${frame} data-bs-dismiss="modal"
-                id="confirmModalConfirmButton">${ok}</a>
+              ${confirmButton}
             </div>
           </div>
         </div>
       </div >
       `;
 
+    this.buildAndFillTempContainer(html);
 
-    var tempDiv = document.createElement('div');
-    tempDiv.id = 'temp-html';
-    tempDiv.innerHTML = html;
-    document.body.append(tempDiv);
-
-    let m = document.querySelector('#confirmDialog');
+    let m = document.querySelector('#the-modal');
     var confirmModal = new Modal(m);
     confirmModal.show();
 
-    m.addEventListener('hidden.bs.modal', function (event) {
-      console.log('removing...');
-      tempDiv.remove();
-    })
+    document.addEventListener('hidden.bs.modal', this.modalHidden);
   }
 
+  modalHidden() {
+    // console.log('modalHidden');
+    document.removeEventListener('hidden.bs.modal', this.modalHidden);
+
+    this.clearTempContainer();
+  }
 }

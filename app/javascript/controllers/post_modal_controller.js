@@ -1,48 +1,53 @@
 import { Controller } from "stimulus";
 import { Modal } from "bootstrap";
+import { tempContainer } from "../src/mixins/tempContainer";
+import { modals } from "../src/mixins/modals";
 
 export default class extends Controller {
   static values = {
     newUrl: String,
-    afterAddUrl: String
+    afterAddUrl: String,
+    editDomId: String
   }
 
   initialize() {
-    console.log('Post modal controller initialize');
+    // console.log('Post modal controller initialize');
     this.modalHidden = this.modalHidden.bind(this);
     this.doFormSubmit = this.doFormSubmit.bind(this);
   }
 
   connect() {
-    console.log('Post modal controller connect');
+    // console.log('Post modal controller connect');
+    tempContainer(this);  // register mixin
+    modals(this);
   }
 
   disconnect() {
-    console.log('disconnect');
+    // console.log('disconnect');
     document.removeEventListener('hidden.bs.modal', this.modalHidden);
     document.removeEventListener('bouncerFormValid', this.doFormSubmit, false);
   }
 
   showFormModal(event) {
-    console.log('Show modal');
+    // console.log('Show modal');
     event.preventDefault();
 
-    var link = event.target.closest('a');
-    console.log(link.dataset.id);
+    let id = this.getId(event);
+    this.setDomId(event);
+    // this.editDomIdValue = this.getDomId(event);
 
-    fetch(this.newUrlValue)
+    let url = (id === '0') ? this.newUrlValue : this.getLinkHref(event);
+
+    fetch(url)
       .then(response => {
         if (response.ok) {
           return response.text();
         }
       })
       .then(html => {
-        var tempDiv = document.createElement('div');
-        tempDiv.id = 'temp-html';
-        tempDiv.innerHTML = html;
-        document.body.append(tempDiv);
+        this.buildAndFillTempContainer(html);
 
-        let m = document.querySelector('#post-modal');
+        let m = document.querySelector('#the-modal');
         if (m) {
           let modal = new Modal(m);
           modal.show();
@@ -55,25 +60,53 @@ export default class extends Controller {
       });
   }
 
+  getId(event) {
+    let link = event.target.closest('a');
+
+    return link.dataset.id || '0';
+  }
+
+  getDomId(event) {
+    let link = event.target.closest('a');
+
+    return link.dataset.domid || '';
+  }
+
+  getLinkHref(event) {
+    let link = event.target.closest('a');
+
+    return link.getAttribute('href') || '';
+  }
+
+  setDomId(event) {
+    this.editDomIdValue = this.getDomId(event);
+  }
+
   doFormSubmit(event) {
     // The successfully validated form
     var form = event.target;
-
-    // console.log(form.action);
-    // console.log(form.method);
-    // console.log(event.target);
-    // console.log(this.newUrlValue);
 
     let data = new FormData(form);
     fetch(form.action, {
       method: form.method,
       body: data
     })
-    .then(response => response.text())
-    .then(html => window.location.replace(this.afterAddUrlValue))
-    .catch(function (error) {
-      console.log('doFormSubmit error: ', error.message);
-    });
+      .then(response => response.text())
+      .then(html => {
+        if (this.editDomIdValue === '') {
+          window.location.replace(this.afterAddUrlValue);
+        } else {
+          let div = document.querySelector(`#${this.editDomIdValue}`);
+          if (div) {
+            div.innerHTML = html;
+            this.closeTheModal();
+          }
+          this.editDomIdValue = '';
+        }
+      })
+      .catch(function (error) {
+        console.log('doFormSubmit error: ', error.message);
+      });
 
     document.removeEventListener('bouncerFormValid', this.doFormSubmit, false);
   }
@@ -84,11 +117,37 @@ export default class extends Controller {
     if (fld) { fld.focus(); }
   }
 
-  modalHidden() {
-    console.log('modalHidden');
-    document.removeEventListener('hidden.bs.modal', this.modalHidden);
+  deleteConfirmed(event) {
+    event.preventDefault();
+    console.log('deleteConfirmed');
 
-    let tempDiv = document.querySelector('#temp-html');
-    tempDiv.remove();
+    let link = event.target.closest('a');
+    if (!link) {
+      console.log('deleteConfirmed: Link not found');
+      this.closeTheModal();
+      return;
+    }
+
+    fetch(link.dataset.url, {
+      method: 'DELETE'
+    })
+      .then(response => response.text())
+      .then(html => {
+        let div = document.querySelector(`#${this.editDomIdValue}`);
+        if (div) {
+          div.remove();
+          this.closeTheModal();
+        }
+        this.editDomIdValue = '';
+      })
+      .catch(function (error) {
+        console.log('deleteConfirmed error: ', error.message);
+      });
+  }
+
+  modalHidden() {
+    // console.log('modalHidden');
+    document.removeEventListener('hidden.bs.modal', this.modalHidden);
+    this.clearTempContainer();
   }
 }

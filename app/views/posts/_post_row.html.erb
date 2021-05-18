@@ -4,15 +4,18 @@
       class: "me-2 btn btn-link", alt: "Show #{post.title}" %>
     <%= link_to tag.i('', class: 'fa fa-lg fa-edit'), edit_post_path(post),
       class: "me-2 btn btn-link", alt: "Edit #{post.title}",
+      "data-domid": dom_id(post),
       "data-id": post.id, "data-action": "post-modal#showFormModal" %>
 
       <a href="#" alt="Delete <%= post.title %>"
-        data-controller="confirm" data-action="confirm#click"
+        data-controller="confirm" data-action="confirm#confirm post-modal#setDomId"
         data-confirm-title-value="Delete this Post?"
         data-confirm-message-value="<p>Are you sure you want to delete the post &quot;<%= post.title %>&quot;?<p>"
         data-confirm-ok-button-value="Delete Post"
+        data-confirm-do-action-value="post-modal#deleteConfirmed"
         data-confirm-url-value="<%= post_path(post) %>"
-        data-confirm-method-value="delete">
+        data-domid="<%= dom_id(post) %>"
+        >
         <i class="fa fa-lg fa-trash"></i>
       </a>
   </div>

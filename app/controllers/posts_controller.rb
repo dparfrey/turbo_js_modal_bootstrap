@@ -36,8 +36,9 @@ class PostsController < ApplicationController
   def update
     respond_to do |format|
       if @post.update(post_params)
+        format.html { render layout: false }
         # format.turbo_stream { render turbo_stream: turbo_stream.update(@post) }
-        format.html { redirect_to posts_url, notice: 'Post was successfully updated.', status: :unprocessable_entity }
+        # format.html { redirect_to posts_url, notice: 'Post was successfully updated.', status: :unprocessable_entity }
       else
         # format.turbo_stream do
         #   render turbo_stream: turbo_stream.replace('post-modal-form',
@@ -55,8 +56,8 @@ class PostsController < ApplicationController
   def destroy
     @post.destroy
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(@post) }
-      format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
+      # format.turbo_stream { render turbo_stream: turbo_stream.remove(@post) }
+      format.html { head :no_content }
     end
   end
 
