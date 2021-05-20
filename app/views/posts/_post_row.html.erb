@@ -8,12 +8,13 @@
       "data-id": post.id, "data-action": "post-modal#showFormModal" %>
 
       <a href="#" alt="Delete <%= post.title %>"
-        data-controller="confirm" data-action="confirm#confirm post-modal#setDomId"
-        data-confirm-title-value="Delete this Post?"
-        data-confirm-message-value="<p>Are you sure you want to delete the post &quot;<%= post.title %>&quot;?<p>"
-        data-confirm-ok-button-value="Delete Post"
-        data-confirm-do-action-value="post-modal#deleteConfirmed"
-        data-confirm-url-value="<%= post_path(post) %>"
+        data-action="post-modal#confirm"
+        data-title="Delete this Post?"
+        data-message="<p>Are you sure you want to delete the post &quot;<%= post.title %>&quot;?<p>"
+        data-ok-button="Delete Post"
+        data-do-action="post-modal#deleteConfirmed"
+        data-cancel-action="post-modal#closeTheModal"
+        data-url="<%= post_path(post) %>"
         data-domid="<%= dom_id(post) %>"
         >
         <i class="fa fa-lg fa-trash"></i>

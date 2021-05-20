@@ -3,7 +3,7 @@
 // version.
 import { Controller } from "stimulus";
 import { Modal } from "bootstrap";
-import { tempContainer } from "../src/mixins/tempContainer";
+import { crudMixin } from "../src/mixins/crudMixin";
 
 export default class extends Controller {
   static values = {
@@ -16,18 +16,9 @@ export default class extends Controller {
     doAction: String
   }
 
-  initialize() {
-    this.modalHidden = this.modalHidden.bind(this);
-  }
-
   connect() {
     // console.log('Confirm controller connect');
-    tempContainer(this);  // register mixin
-  }
-
-  disconnect() {
-    // console.log('disconnect');
-    document.removeEventListener('hidden.bs.modal', this.modalHidden);
+    crudMixin(this);  // register mixin
   }
 
   confirm(event) {
@@ -64,13 +55,13 @@ export default class extends Controller {
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="confirmModalTitle">${title}</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close" data-action="confirm#closeTheModal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               ${msg}
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-link" id="confirmModalCancelButton" data-bs-dismiss="modal">${cancel}</button>
+              <button type="button" class="btn btn-link" data-action="confirm#closeTheModal">${cancel}</button>
               ${confirmButton}
             </div>
           </div>
@@ -80,17 +71,7 @@ export default class extends Controller {
 
     this.buildAndFillTempContainer(html);
 
-    let m = document.querySelector('#the-modal');
-    var confirmModal = new Modal(m);
-    confirmModal.show();
-
-    document.addEventListener('hidden.bs.modal', this.modalHidden);
+    this.showTheModal();
   }
 
-  modalHidden() {
-    // console.log('modalHidden');
-    document.removeEventListener('hidden.bs.modal', this.modalHidden);
-
-    this.clearTempContainer();
-  }
 }

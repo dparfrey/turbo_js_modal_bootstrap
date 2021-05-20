@@ -1,7 +1,11 @@
 # turbo_modal_bootstrap
 
-Here's my take on a basic CRUD setup using Turbo and Stimulus, with Bootstrap modals. It's based
-on Doug Stull's excellent tutorial on the subject (see https://dev.to/dstull/how-to-use-modals-with-forms-in-rails-using-turbo-14n7), except with Bootstrap 5 instead of TailwindCSS.
+
+
+## To Do
+* Move more stuff to crudMixin
+* Animations?
+* Ajax Add at top of list
 
 ## Setup
 

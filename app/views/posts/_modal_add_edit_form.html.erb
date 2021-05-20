@@ -1,14 +1,17 @@
 <%= form_with(model: post, id: 'post-modal-form',
-  html: { novalidate: 'novalidate', 'data-validate': '' }) do |f| %>
+  html: { novalidate: 'novalidate', 'data-validate': '',
+          "data-domid": (post.new_record? ? '' : dom_id(post)) }) do |f| %>
   <div class="modal-header">
     <h5 class="modal-title" id="postModalTitle"><%= @post.new_record? ? 'New Post' : 'Change Post' %></h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <button type="button" class="btn-close" aria-label="Close"
+      data-action="post-modal#closeTheModal"></button>
   </div>
   <div class="modal-body" >
     <%= render partial: 'posts/form', locals: {f: f, post: post} %>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-link" id="postModalCancelButton" data-bs-dismiss="modal">Cancel</button>
+    <button type="button" class="btn btn-link" id="postModalCancelButton"
+      data-action="post-modal#closeTheModal">Cancel</button>
     <%= f.submit class: "btn btn-primary",
           data: { disable_with: false }  %>
   </div>
