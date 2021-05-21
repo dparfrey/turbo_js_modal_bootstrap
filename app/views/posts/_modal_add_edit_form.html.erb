@@ -1,5 +1,6 @@
 <%= form_with(model: post, id: 'post-modal-form',
   html: { novalidate: 'novalidate', 'data-validate': '',
+          "data-back-url": posts_path,
           "data-domid": (post.new_record? ? '' : dom_id(post)) }) do |f| %>
   <div class="modal-header">
     <h5 class="modal-title" id="postModalTitle"><%= @post.new_record? ? 'New Post' : 'Change Post' %></h5>

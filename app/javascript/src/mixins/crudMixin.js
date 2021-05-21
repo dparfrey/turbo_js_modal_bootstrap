@@ -1,7 +1,128 @@
 import { Modal } from "bootstrap";
+import getMetaValue from "../../src/metaValue";
 
 export const crudMixin = controller => {
   Object.assign(controller, {
+
+    bindFunctions() {
+      this.doFormSubmit = this.doFormSubmit.bind(this);
+      this.modalHidden = this.modalHidden.bind(this);
+      this.setFocus = this.setFocus.bind(this);
+    },
+
+    addListeners() {
+      document.addEventListener('hidden.bs.modal', this.modalHidden);
+      document.addEventListener('bouncerFormValid', this.doFormSubmit, false);
+      document.addEventListener('shown.bs.modal', this.setFocus);
+    },
+
+    removeListeners() {
+      document.removeEventListener('hidden.bs.modal', this.modalHidden);
+      document.removeEventListener('bouncerFormValid', this.doFormSubmit, false);
+      document.removeEventListener('shown.bs.modal', this.setFocus);
+    },
+
+    showFormModal(event) {
+      // console.log('showFormModal');
+      event.preventDefault();
+
+      let id = this.getId(event);
+      let url = this.getLinkHref(event);
+
+      fetch(url)
+        .then(response => {
+          if (response.ok) {
+            return response.text();
+          }
+        })
+        .then(html => {
+          this.buildAndFillTempContainer(html);
+          this.showTheModal();
+
+          this.addListeners();
+
+          if (typeof this.afterShowFormModal == 'function') {
+            this.afterShowFormModal(event);
+          }
+        }).catch(function (error) {
+          console.log('Error fetching form: ', error.message);
+        });
+    },
+
+    setFocus() {
+      console.log('setFocus');
+      let fld = document.querySelector("input.autofocus");
+      if (fld) { fld.focus(); } else { console.log('no autofocus found');}
+    },
+
+    doFormSubmit(event) {
+      console.log('doFormSubmit');
+      // The successfully validated form
+      var form = event.target;
+
+      let domid = form.dataset.domid || '';
+
+      let data = new FormData(form);
+      fetch(form.action, {
+        method: form.method,
+        body: data
+      })
+        .then(response => response.text())
+        .then(html => {
+          if (domid === '') {
+            window.location.replace(form.dataset.backUrl);
+          } else {
+            let div = document.querySelector(`#${domid}`);
+            if (div) {
+              div.innerHTML = html;
+              this.closeTheModal();
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log('doFormSubmit error: ', error.message);
+        });
+
+      document.removeEventListener('bouncerFormValid', this.doFormSubmit, false);
+    },
+
+    deleteConfirmed(event) {
+      event.preventDefault();
+      console.log('deleteConfirmed!');
+
+      let link = event.target.closest('a');
+      if (!link) {
+        console.log('deleteConfirmed: Link not found');
+        this.closeTheModal();
+        return;
+      }
+
+      let domid = link.dataset.domid;
+
+      fetch(link.dataset.url, {
+        method: 'DELETE',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          "X-CSRF-Token": getMetaValue("csrf-token")
+        },
+        credentials: 'same-origin'
+      })
+        .then(response => response.text())
+        .then(html => {
+          let div = document.querySelector(`#${domid}`);
+          if (div) {
+            console.log('div found');
+            this.closeTheModal();
+            div.classList.add('delete-animation');
+            setTimeout(() => {
+              div.remove();
+            }, 1000);
+          }
+        })
+        .catch(function (error) {
+          console.log('deleteConfirmed error: ', error.message);
+        });
+    },
 
     showTheModal() {
       let m = document.querySelector('#the-modal');
@@ -21,10 +142,17 @@ export const crudMixin = controller => {
         if (modal) {
           // console.log('hiding modal');
           modal.hide();
-
+          this.removeListeners();
           this.clearTempContainer();
         }
       }
+    },
+
+    modalHidden() {
+      console.log('modalHidden');
+      this.removeListeners();
+
+      this.clearTempContainer();
     },
 
     // get id, dom_id from data-id and data-domid in links. Not using
@@ -145,6 +273,5 @@ export const crudMixin = controller => {
         tempDiv.remove();
       }
     }
-
   });
 };

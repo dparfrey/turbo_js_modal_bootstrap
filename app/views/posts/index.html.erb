@@ -1,13 +1,10 @@
-<div data-controller="post-modal"
-    data-post-modal-new-url-value="<%= new_post_path %>"
-    data-post-modal-after-add-url-value="<%= posts_path %>"
-    >
+<div data-controller="post-modal">
   <div class="row mb-2">
     <div class="col-auto me-auto">
       <div class="h2">Posts</div>
     </div>
     <div class="col-auto">
-      <a class="btn btn-outline-primary d-none d-md-inline float-end" hrefx="<%= new_post_path %>"
+      <a class="btn btn-outline-primary d-none d-md-inline float-end" href="<%= new_post_path %>"
         data-action="post-modal#showFormModal">
         <i class="fas fa-plus"></i> New Post
       </a>

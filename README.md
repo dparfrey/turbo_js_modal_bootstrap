@@ -3,9 +3,7 @@
 
 
 ## To Do
-* Move more stuff to crudMixin
-* Animations?
-* Ajax Add at top of list
+* Ajax - add at top of list
 
 ## Setup
 

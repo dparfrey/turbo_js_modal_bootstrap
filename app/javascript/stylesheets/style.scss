@@ -3,3 +3,35 @@
 	font-style: italic;
 	margin-bottom: 1em;
 }
+
+.success-animation {
+	animation: successfade 1.5s;
+}
+
+.delete-animation {
+	animation: deleteFade 1.5s;
+}
+
+@keyframes successfade {
+	from {
+		background-color: $success;
+		opacity: .4;
+	}
+	to {
+		background-color: $body-bg;
+		opacity: 1.0;
+	}
+}
+
+@keyframes deleteFade {
+	from {
+		background-color: $danger;
+		color: $body-color;
+		opacity: .4;
+	}
+	to {
+		background-color: $body-bg;
+		color: $body-bg;
+		opacity: 1.0;
+	}
+}
