@@ -7,15 +7,15 @@
     <%= link_to tag.i('', class: 'fa fa-lg fa-edit'), edit_post_path(post),
       class: "me-2 btn btn-link", alt: "Edit #{post.title}",
       "data-domid": dom_id(post),
-      "data-id": post.id, "data-action": "post-modal#showFormModal" %>
+      "data-id": post.id, "data-action": "crud#showFormModal" %>
 
       <a href="#" alt="Delete <%= post.title %>"
-        data-action="post-modal#confirm"
+        data-action="crud#confirm"
         data-title="Delete this Post?"
         data-message="<p>Are you sure you want to delete the post &quot;<%= post.title %>&quot;?<p>"
         data-ok-button="Delete Post"
-        data-do-action="post-modal#deleteConfirmed"
-        data-cancel-action="post-modal#closeTheModal"
+        data-do-action="crud#deleteConfirmed"
+        data-cancel-action="crud#closeTheModal"
         data-url="<%= post_path(post) %>"
         data-domid="<%= dom_id(post) %>"
         >

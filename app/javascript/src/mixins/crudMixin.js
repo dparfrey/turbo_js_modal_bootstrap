@@ -50,13 +50,13 @@ export const crudMixin = controller => {
     },
 
     setFocus() {
-      console.log('setFocus');
+      // console.log('setFocus');
       let fld = document.querySelector("input.autofocus");
       if (fld) { fld.focus(); } else { console.log('no autofocus found');}
     },
 
     doFormSubmit(event) {
-      console.log('doFormSubmit');
+      // console.log('doFormSubmit');
       // The successfully validated form
       var form = event.target;
 
@@ -69,13 +69,17 @@ export const crudMixin = controller => {
       })
         .then(response => response.text())
         .then(html => {
-          if (domid === '') {
-            window.location.replace(form.dataset.backUrl);
+          if (typeof this.afterFormModalResults == 'function') {
+            this.afterFormModalResults(event, html);
           } else {
-            let div = document.querySelector(`#${domid}`);
-            if (div) {
-              div.innerHTML = html;
-              this.closeTheModal();
+            if (domid === '') {
+              window.location.replace(form.dataset.backUrl);
+            } else {
+              let div = document.querySelector(`#${domid}`);
+              if (div) {
+                div.innerHTML = html;
+                this.closeTheModal();
+              }
             }
           }
         })
@@ -88,7 +92,7 @@ export const crudMixin = controller => {
 
     deleteConfirmed(event) {
       event.preventDefault();
-      console.log('deleteConfirmed!');
+      // console.log('deleteConfirmed!');
 
       let link = event.target.closest('a');
       if (!link) {
@@ -109,14 +113,18 @@ export const crudMixin = controller => {
       })
         .then(response => response.text())
         .then(html => {
-          let div = document.querySelector(`#${domid}`);
-          if (div) {
-            console.log('div found');
-            this.closeTheModal();
-            div.classList.add('delete-animation');
-            setTimeout(() => {
-              div.remove();
-            }, 1000);
+          if (typeof this.afterDelete == 'function') {
+            this.afterDelete(event, html);
+          } else {
+            let div = document.querySelector(`#${domid}`);
+            if (div) {
+              // console.log('div found');
+              this.closeTheModal();
+              div.classList.add('delete-animation');
+              setTimeout(() => {
+                div.remove();
+              }, 1000);
+            }
           }
         })
         .catch(function (error) {
@@ -133,7 +141,7 @@ export const crudMixin = controller => {
     },
 
     closeTheModal() {
-      console.log('closeTheModal');
+      // console.log('closeTheModal');
       let m = document.querySelector('#the-modal');
       if (m) {
         // console.log('close_modal hiding');
@@ -149,7 +157,7 @@ export const crudMixin = controller => {
     },
 
     modalHidden() {
-      console.log('modalHidden');
+      // console.log('modalHidden');
       this.removeListeners();
 
       this.clearTempContainer();

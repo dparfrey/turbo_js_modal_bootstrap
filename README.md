@@ -3,6 +3,7 @@
 
 
 ## To Do
+* Blend validation into crud?
 * Ajax - add at top of list
 
 ## Setup

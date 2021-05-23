@@ -5,14 +5,14 @@
   <div class="modal-header">
     <h5 class="modal-title" id="postModalTitle"><%= @post.new_record? ? 'New Post' : 'Change Post' %></h5>
     <button type="button" class="btn-close" aria-label="Close"
-      data-action="post-modal#closeTheModal"></button>
+      data-action="crud#closeTheModal"></button>
   </div>
   <div class="modal-body" >
     <%= render partial: 'posts/form', locals: {f: f, post: post} %>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-link" id="postModalCancelButton"
-      data-action="post-modal#closeTheModal">Cancel</button>
+      data-action="crud#closeTheModal">Cancel</button>
     <%= f.submit class: "btn btn-primary",
           data: { disable_with: false }  %>
   </div>

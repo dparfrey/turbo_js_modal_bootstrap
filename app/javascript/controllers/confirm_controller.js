@@ -1,6 +1,8 @@
 // This is a replacement for the built-in Rails ujs confirmation method when using Bootstrap.
 // Trying to hook into the built-in stuff is a pain, and changes with every Rails (now Hotwire)
 // version.
+
+// This has been embedded into the crud controller, but left "just in case".
 import { Controller } from "stimulus";
 import { Modal } from "bootstrap";
 import { crudMixin } from "../src/mixins/crudMixin";
