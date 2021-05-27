@@ -1,24 +1,10 @@
 # turbo_modal_bootstrap
 
-This is a "traditional" Stimulus Javascript implementation of a basic CRUD page with Bootstrap 5
-modals. It's still using Turbo, but not Turbo Streams.
+This is a "traditional" Stimulus Javascript implementation of a basic CRUD page with Bootstrap 5 modals. It's still using Turbo, but not Turbo Streams.
 
-The result is a Stimulus "crud controller" for the page. Most of the code is in `crudMixin.js`, making
-it easy to create your own custom controller if you want to customize some of the actions.
-
-The basic crud actions are covered in `crud_controller.js`. I'm using "regular"
-`data-` attributes for most of the settings, since I have a single controller
-for the entire group. I tried using multiple controllers, one for each record, but the event handlers I have to define to make things work got out of hand, causing duplicate processing. Also, I'm opening and closing Bootstrap modals with Javascript to be able to inject my own logic easier.
-
-Finally, I'm using http://github.com/cferdinandi/bouncer for my validations.
-It works well, but needs an event handler to be able to intercept submits. Without it, Bouncer tries to submit the form and Turbo ignores it.
-
-I've included `crud_disable_controller.js` as an example of overriding the
-delete/destroy method to update the row instead of deleting it. I use it to
-show disabled records (typically grayed out).
+I hope this helps someone.
 
 ## History
-
 I'd been trying to use Turbo/Stimulus with Bootstrap 5 to set up a basic CRUD page. Basically,
 there's a list of records showing. You can edit each record through a modal popup and delete
 it with a confirmation modal. There's also a "New" button somewhere on the page.
@@ -34,6 +20,25 @@ how this would look with some regular Stimulus Javascript making AJAX calls.
 
 And... I like it a lot better. The result is a lot of Javascript, but I think it's easier to set
 up and understand.
+
+## Using Javascript instead of Turbo
+The result is a Stimulus "crud controller" for the page. Most of the code is in `crudMixin.js`, making
+it easy to create your own custom controller if you want to customize some of the actions.
+
+The basic crud actions are covered in `crud_controller.js`. I'm using "regular"
+`data-` attributes for most of the settings, since I have a single controller
+for the entire group. I tried using multiple controllers, one for each record, but the event handlers I have to define to make things work got out of hand, causing duplicate processing. Also, I'm opening and closing Bootstrap modals with Javascript to be able to inject my own logic easier.
+
+I'm using http://github.com/cferdinandi/bouncer for my validations.
+It works well, but needs an event handler to be able to intercept submits. Without it, Bouncer tries to submit the form and Turbo ignores it.
+
+I've included `crud_disable_controller.js` as an example of overriding the
+delete/destroy method to update the row instead of deleting it. I use it to
+show disabled records (typically grayed out).
+
+Finally, if you use crud_controller more than once on a page, change the id
+of the temp container div so each controller has its own temp area. See
+`crud_disable_controller.js` to see how it's done.
 
 ## Try it out
 
