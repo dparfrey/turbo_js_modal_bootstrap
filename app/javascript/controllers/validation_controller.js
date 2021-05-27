@@ -1,9 +1,16 @@
+
 import { Controller } from "stimulus"
 
 export default class extends Controller {
+  static values = {
+    disableSubmit: Boolean
+  }
 
   connect() {
-    console.log('bouncer connect');
+    console.log(this.disableSubmitValue);
+    let disableSubmit = (this.disableSubmitValue) ? this.disableSubmitValue : false;
+    console.log('DisableSubmit=' + disableSubmit);
+
     let bouncer = new Bouncer('[data-validate]', {
       customValidations: {
         valueMismatch: function (field) {
@@ -29,7 +36,7 @@ export default class extends Controller {
           return customMessage ? customMessage : 'Please make sure the fields match.'
         }
       },
-      disableSubmit: true // If true, native form submission is suppressed even when form validates
+      disableSubmit: disableSubmit // If true, native form submission is suppressed even when form validates
     });
   }
 }

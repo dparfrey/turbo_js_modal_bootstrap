@@ -23,7 +23,7 @@ export const crudMixin = controller => {
     },
 
     showFormModal(event) {
-      // console.log('showFormModal');
+      console.log('showFormModal');
       event.preventDefault();
 
       let id = this.getId(event);
@@ -52,11 +52,12 @@ export const crudMixin = controller => {
     setFocus() {
       // console.log('setFocus');
       let fld = document.querySelector("input.autofocus");
-      if (fld) { fld.focus(); } else { console.log('no autofocus found');}
+      if (fld) { fld.focus(); } else { console.log('no autofocus found'); }
     },
 
     doFormSubmit(event) {
       // console.log('doFormSubmit');
+
       // The successfully validated form
       var form = event.target;
 
@@ -114,7 +115,7 @@ export const crudMixin = controller => {
         .then(response => response.text())
         .then(html => {
           if (typeof this.afterDelete == 'function') {
-            this.afterDelete(event, html);
+            this.afterDelete(event, domid, html);
           } else {
             let div = document.querySelector(`#${domid}`);
             if (div) {
@@ -244,6 +245,17 @@ export const crudMixin = controller => {
 
 
     // temp container functions
+
+    // This lets the using controller override the temp container id
+    getTempContainerId() {
+      if (typeof this.tempContainerId == 'function') {
+        return this.tempContainerId();
+      } else {
+        return "temp-container";
+      }
+    },
+
+
     buildAndFillTempContainer(html) {
       let tempDiv = this.buildTempContainer();
       if (tempDiv) {
@@ -256,10 +268,13 @@ export const crudMixin = controller => {
     },
 
     buildTempContainer() {
-      let tempDiv = document.querySelector('#temp-container');
+      let id = this.getTempContainerId();
+      let sel = `#${id}`;
+
+      let tempDiv = document.querySelector(sel);
       if (!tempDiv) {
         tempDiv = document.createElement('div');
-        tempDiv.id = 'temp-container';
+        tempDiv.id = id;
         document.body.append(tempDiv);
       }
 
@@ -267,7 +282,8 @@ export const crudMixin = controller => {
     },
 
     clearTempContainer() {
-      let tempDiv = document.querySelector('#temp-container');
+      let sel = `#${this.getTempContainerId()}`;
+      let tempDiv = document.querySelector(sel);
       if (tempDiv) {
         tempDiv.innerHTML = '';
       }
@@ -276,7 +292,8 @@ export const crudMixin = controller => {
     },
 
     deleteTempContainer() {
-      let tempDiv = document.querySelector('#temp-container');
+      let sel = `#${this.getTempContainerId()}`;
+      let tempDiv = document.querySelector(sel);
       if (tempDiv) {
         tempDiv.remove();
       }
